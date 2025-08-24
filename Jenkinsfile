@@ -5,7 +5,7 @@ environment {
 // Salesforce environment variables
 SF_CONSUMER_KEY = credentials('SF_CONSUMER_KEY') // store in Jenkins as Secret Text
 SF_USERNAME = credentials('SF_USERNAME') // store in Jenkins as Secret Text
-SF_INSTANCE_URL = SF_INSTANCE_URL?:'https://login.salesforce.com' // or test.salesforce.com for sandbox
+SF_INSTANCE_URL = SF_INSTANCE_URL // or test.salesforce.com for sandbox
 }
 
 stages {
