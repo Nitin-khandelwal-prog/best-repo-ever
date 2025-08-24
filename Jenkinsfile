@@ -19,7 +19,7 @@ checkout scm
 
 stage('Authorize DevHub') {
 steps {
-withCredentials([file(credentialsId: 'SERVER_KEY_CREDENTIALS_ID', variable: 'server_key_file')]) {
+withCredentials([file(credentialsId: 'CICD_PRIVATE_KEY', variable: 'server_key_file')]) {
 sh """
 sfdx auth:jwt:grant \
 --clientid ${SF_CONSUMER_KEY} \
