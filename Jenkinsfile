@@ -36,11 +36,7 @@ sfdx auth:jwt:grant \
 stage('Create Scratch Org') {
 steps {
 sh """
-sfdx force:org:create \
---definitionfile config/project-scratch-def.json \
---setalias ciorg \
---durationdays 1 \
---setdefaultusername
+sfdx 'force:org:create -f config/project-scratch-def.json -a ciorg -d 7'
 """
 }
 }
