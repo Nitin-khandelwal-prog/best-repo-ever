@@ -1,13 +1,15 @@
 {
   "orgName": "nitin.khandelwal company",
   "edition": "Developer",
-  "features": ["EnableSetPasswordInApi"],
+  "features": [],
   "settings": {
-    "lightningExperienceSettings": {
-      "enableS1DesktopEnabled": true
-    },
-    "mobileSettings": {
-      "enableS1EncryptedStoragePref2": false
+        "mobileSettings": {
+            "enableS1EncryptedStoragePref2": false
+        },
+        "lightningExperienceSettings": {
+            "enableS1DesktopEnabled": true
+        },
+        "securitySettings": {
+        }
     }
-  }
 }
