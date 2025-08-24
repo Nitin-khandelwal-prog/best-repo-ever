@@ -1,0 +1,16 @@
+qqpipeline{
+    agent any
+    stages {
+stage('Checkout') {
+steps {
+git branch: 'main' , url: 'git@github.com:Nitin-khandelwal-prog/best-repo-ever.git'
+}
+}
+stage('SFDX Version'){
+steps {
+sh 'sfdx --version'
+sh 'sfdx force --help'
+}
+}
+}
+}
