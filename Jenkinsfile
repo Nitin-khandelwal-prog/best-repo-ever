@@ -36,7 +36,7 @@ sfdx auth:jwt:grant \
 stage('Create Scratch Org') {
 steps {
 sh """
-sfdx 'force:org:create -f config/project-scratch-def.json -a ciorg -d 7'
+ 'sfdx force:org:create -f config/project-scratch-def.json -a ciorg -d 7'
 """
 }
 }
