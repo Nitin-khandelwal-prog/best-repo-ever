@@ -1,15 +1,63 @@
-qqpipeline{
-    agent any
-    stages {
-stage('Checkout') {
+pipeline {
+agent any
+
+environment {
+// Salesforce environment variables
+SF_CONSUMER_KEY = credentials('SF_CONSUMER_KEY') // store in Jenkins as Secret Text
+SF_USERNAME = credentials('SF_USERNAME') // store in Jenkins as Secret Text
+SF_INSTANCE_URL = SF_INSTANCE_URL?:'https://login.salesforce.com' // or test.salesforce.com for sandbox
+}
+
+stages {
+
+stage('Checkout Source') {
 steps {
-git branch: 'main' , url: 'git@github.com:Nitin-khandelwal-prog/best-repo-ever.git'
+checkout scm
 }
 }
-stage('SFDX Version'){
+
+stage('Authorize DevHub') {
 steps {
-sh 'sfdx --version'
-sh 'sfdx force --help'
+withCredentials([file(credentialsId: 'SERVER_KEY_CREDENTIALS_ID', variable: 'server_key_file')]) {
+sh """
+sfdx auth:jwt:grant \
+--clientid ${SF_CONSUMER_KEY} \
+--jwtkeyfile ${server_key_file} \
+--username ${SF_USERNAME} \
+--instanceurl ${SF_INSTANCE_URL} \
+--setdefaultdevhubusername
+"""
+}
+}
+}
+
+stage('Create Scratch Org') {
+steps {
+sh """
+sfdx org create scratch \
+--definition-file config/project-scratch-def.json \
+--alias ciorg \
+--duration-days 1 \
+--setdefault
+"""
+}
+}
+
+stage('Push Source To Scratch Org') {
+steps {
+sh 'sfdx project deploy start --target-org ciorg'
+}
+}
+
+stage('Run Apex Tests') {
+steps {
+sh 'sfdx apex run test --target-org ciorg --wait 10 --result-format human --code-coverage'
+}
+}
+
+stage('Delete Scratch Org') {
+steps {
+sh 'sfdx org delete scratch --target-org ciorg --no-prompt'
 }
 }
 }
